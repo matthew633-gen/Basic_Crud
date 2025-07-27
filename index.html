@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic LP Layout</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    /* Modal-specific styles (copied from your prompt, slightly scoped) */
+    #contactModal .modal-content {
+      border-radius: 1.25rem;
+      box-shadow: 0 0.5rem 2rem rgb(13 202 240 / 0.10), 0 2px 24px 0 rgba(0,0,0,0.10);
+      background: rgba(30,34,43,0.85);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      border: none;
+    }
+    #contactModal .modal-header {
+      background: linear-gradient(90deg, #0dcaf0 0%, #0a58ca 100%) !important;
+      border-bottom: none;
+      border-radius: 1.25rem 1.25rem 0 0 !important;
+      box-shadow: 0 2px 16px 0 rgba(13,202,240,0.10);
+    }
+    #contactModal .modal-title {
+      font-family: 'Orbitron', 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 2px 8px #0dcaf0;
+    }
+    #contactModal .modal-body {
+      padding: 2.5rem 2rem 2rem 2rem;
+    }
+    #contactModal .form-label {
+      font-weight: 600;
+      color: #b6eaff;
+      letter-spacing: 1px;
+    }
+    #contactModal .form-control {
+      border-radius: 0.7rem;
+      background: rgba(255,255,255,0.09) !important;
+      color: #fff !important;
+      border: 1.5px solid #0dcaf0;
+      font-size: 1.08rem;
+      box-shadow: 0 2px 8px 0 rgba(13,202,240,0.04);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #contactModal .form-control:focus {
+      border-color: #0dcaf0;
+      box-shadow: 0 0 0 0.2rem rgba(13,202,240,0.18);
+      background: rgba(255,255,255,0.13) !important;
+      color: #fff !important;
+    }
+    #contactModal .btn-info {
+      background: linear-gradient(90deg,#0dcaf0 0%,#0a58ca 100%);
+      border: none;
+      letter-spacing:1px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 16px 0 rgba(13,202,240,0.10);
+      transition: background 0.2s, transform 0.15s;
+    }
+    #contactModal .btn-info:hover, #contactModal .btn-info:focus {
+      background: linear-gradient(90deg,#0a58ca 0%,#0dcaf0 100%);
+      color: #fff;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 4px 24px 0 rgba(13,202,240,0.18);
+    }
+    /* Animated blobs for modal background */
+    #contactModal .aura-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    #contactModal .aura-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.7;
+      animation: auraFloat 18s ease-in-out infinite alternate;
+      mix-blend-mode: lighten;
+      transition: opacity 0.5s;
+    }
+    #contactModal .aura-blob1 { width: 300px; height: 300px; background: radial-gradient(circle, #ff6fd8 0%, #3813c2 80%); left: -80px; top: -60px; animation-delay: 0s; }
+    #contactModal .aura-blob2 { width: 200px; height: 200px; background: radial-gradient(circle, #fbc2eb 0%, #fad0c4 80%); right: -60px; top: 60px; animation-delay: 4s; }
+    #contactModal .aura-blob3 { width: 180px; height: 180px; background: radial-gradient(circle, #43e97b 0%, #38f9d7 80%); left: 35vw; bottom: -40px; animation-delay: 8s; }
+    @keyframes auraFloat {
+      0%   { transform: scale(1) translateY(0) translateX(0);}
+      50%  { transform: scale(1.12) translateY(60px) translateX(40px);}
+      100% { transform: scale(1) translateY(0) translateX(0);}
+    }
+
+    /* Hero Section Styles */
+    .hero-section {
+      position: relative;
+      height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('covered.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(13,202,240,0.1) 0%, rgba(10,88,202,0.2) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+      max-width: 800px;
+      padding: 0 2rem;
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', 'Montserrat', sans-serif;
+      font-size: 4rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      animation: heroFadeInUp 1s ease-out;
+    }
+
+    .hero-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 3rem;
+      opacity: 0.9;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      animation: heroFadeInUp 1s ease-out 0.3s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: heroFadeInUp 1s ease-out 0.6s both;
+    }
+
+    .hero-btn {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero-btn.btn-primary {
+      background: linear-gradient(90deg, #0dcaf0 0%, #0a58ca 100%);
+      border: none;
+      color: white;
+    }
+
+    .hero-btn.btn-primary:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 30px rgba(13,202,240,0.4);
+      background: linear-gradient(90deg, #0a58ca 0%, #0dcaf0 100%);
+    }
+
+    .hero-btn.btn-outline-light {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.8);
+      color: white;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-btn.btn-outline-light:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: white;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 30px rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    @keyframes heroFadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .hero-btn {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+        letter-spacing: 1px;
+      }
+      
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+    }
+
+    /* Dark mode hero styles */
+    body.dark-mode .hero-section {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('covered.jpg');
+    }
+
+    body.dark-mode .hero-overlay {
+      background: linear-gradient(135deg, rgba(13,202,240,0.15) 0%, rgba(10,88,202,0.25) 100%);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm" style="background: linear-gradient(90deg, #0a58ca 0%, #0dcaf0 100%); font-family: 'Montserrat', sans-serif; border-radius: 0 0 1rem 1rem;">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand fw-bold" href="#" style="font-family: 'Orbitron', 'Montserrat', sans-serif; letter-spacing:2px;">
+        <i class="bi bi-lightning-charge-fill me-2"></i>Gen_Tech </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center px-3" href="#">
+              <i class="bi bi-info-circle me-1"></i> About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center px-3" href="#">
+              <i class="bi bi-box-seam me-1"></i> Products
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center px-3" href="#">
+              <i class="bi bi-people-fill me-1"></i> Our Team
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center px-3" href="#" data-bs-toggle="modal" data-bs-target="#contactModal">
+              <i class="bi bi-envelope-paper me-1"></i> Contact
+            </a>
+          </li>
+          <li class="nav-item ms-lg-3">
+            <!-- Dark mode toggle button (kept as is) -->
+            <button id="darkModeToggle" class="btn btn-outline-light" style="border-radius:50%;width:40px;height:40px;font-size:1.3rem;" aria-label="Toggle dark mode">
+              <span id="darkModeIcon" style="display:inline-block;vertical-align:middle;">🌙</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contact Modal -->
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content position-relative" style="border-radius:1.25rem;box-shadow:0 0.5rem 2rem rgb(13 202 240 / 0.10),0 2px 24px 0 rgba(0,0,0,0.10);background:rgba(30,34,43,0.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);overflow:hidden;border:none;">
+        <!-- Animated blobs background -->
+        <div class="aura-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;">
+          <div class="aura-blob aura-blob1" style="width:300px;height:300px;background:radial-gradient(circle,#ff6fd8 0%,#3813c2 80%);left:-80px;top:-60px;animation-delay:0s;position:absolute;border-radius:50%;filter:blur(60px);opacity:0.7;animation:auraFloat 18s ease-in-out infinite alternate;mix-blend-mode:lighten;transition:opacity 0.5s;"></div>
+          <div class="aura-blob aura-blob2" style="width:200px;height:200px;background:radial-gradient(circle,#fbc2eb 0%,#fad0c4 80%);right:-60px;top:60px;animation-delay:4s;position:absolute;border-radius:50%;filter:blur(60px);opacity:0.7;animation:auraFloat 18s ease-in-out infinite alternate;mix-blend-mode:lighten;transition:opacity 0.5s;"></div>
+          <div class="aura-blob aura-blob3" style="width:180px;height:180px;background:radial-gradient(circle,#43e97b 0%,#38f9d7 80%);left:35vw;bottom:-40px;animation-delay:8s;position:absolute;border-radius:50%;filter:blur(60px);opacity:0.7;animation:auraFloat 18s ease-in-out infinite alternate;mix-blend-mode:lighten;transition:opacity 0.5s;"></div>
+        </div>
+        <style>
+          @keyframes auraFloat {
+            0%   { transform: scale(1) translateY(0) translateX(0);}
+            50%  { transform: scale(1.12) translateY(60px) translateX(40px);}
+            100% { transform: scale(1) translateY(0) translateX(0);}
+          }
+        </style>
+        <div class="modal-header" style="background:linear-gradient(90deg,#0dcaf0 0%,#0a58ca 100%)!important;border-bottom:none;border-radius:1.25rem 1.25rem 0 0!important;box-shadow:0 2px 16px 0 rgba(13,202,240,0.10);">
+          <h5 class="modal-title" id="contactModalLabel" style="font-family:'Orbitron','Montserrat',sans-serif;font-size:1.6rem;letter-spacing:2px;font-weight:700;color:#fff;text-shadow:0 2px 8px #0dcaf0;">Add New Contact</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="padding:2.5rem 2rem 2rem 2rem;">
+          <form action="submit.php" method="POST" novalidate>
+            <div class="mb-3">
+              <label for="name" class="form-label" style="font-weight:600;color:#b6eaff;letter-spacing:1px;">Name</label>
+              <input type="text" id="name" name="name" class="form-control" placeholder="Enter full name" required style="border-radius:0.7rem;background:rgba(255,255,255,0.09)!important;color:#fff!important;border:1.5px solid #0dcaf0;font-size:1.08rem;box-shadow:0 2px 8px 0 rgba(13,202,240,0.04);">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label" style="font-weight:600;color:#b6eaff;letter-spacing:1px;">Email</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required style="border-radius:0.7rem;background:rgba(255,255,255,0.09)!important;color:#fff!important;border:1.5px solid #0dcaf0;font-size:1.08rem;box-shadow:0 2px 8px 0 rgba(13,202,240,0.04);">
+            </div>
+            <div class="mb-3">
+              <label for="subject" class="form-label" style="font-weight:600;color:#b6eaff;letter-spacing:1px;">Subject</label>
+              <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject of the message" required style="border-radius:0.7rem;background:rgba(255,255,255,0.09)!important;color:#fff!important;border:1.5px solid #0dcaf0;font-size:1.08rem;box-shadow:0 2px 8px 0 rgba(13,202,240,0.04);">
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label" style="font-weight:600;color:#b6eaff;letter-spacing:1px;">Message</label>
+              <textarea id="message" name="message" class="form-control" rows="5" placeholder="Write your message here..." required style="border-radius:0.7rem;background:rgba(255,255,255,0.09)!important;color:#fff!important;border:1.5px solid #0dcaf0;font-size:1.08rem;box-shadow:0 2px 8px 0 rgba(13,202,240,0.04);"></textarea>
+            </div>
+            <button type="submit" class="btn btn-info w-100 fw-semibold shadow" style="background:linear-gradient(90deg,#0dcaf0 0%,#0a58ca 100%);border:none;letter-spacing:1px;font-weight:700;font-size:1.1rem;box-shadow:0 2px 16px 0 rgba(13,202,240,0.10);transition:background 0.2s,transform 0.15s;">
+              Send Message
+            </button>
+          </form>
+          <div class="text-center mt-4 d-flex flex-column flex-md-row justify-content-center gap-3">
+            <a href="view.php" class="btn btn-outline-info fw-semibold px-4 py-2 shadow-sm d-inline-flex align-items-center mb-2 mb-md-0" style="border-radius:2rem;font-weight:600;font-size:1.08rem;letter-spacing:1px;box-shadow:0 2px 8px 0 rgba(13,202,240,0.08);background:rgba(255,255,255,0.07);border-width:2px;transition:background 0.2s,color 0.2s,border-color 0.2s,transform 0.15s;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0dcaf0" class="me-2" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zm-8 4.5c-2.485 0-4.5-2.015-4.5-4.5S5.515 3.5 8 3.5s4.5 2.015 4.5 4.5-2.015 4.5-4.5 4.5zm0-1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+              </svg>
+              View Contacts
+            </a>
+            <a href="https://gen288.github.io/Websystem/Home.html" class="btn btn-outline-light fw-semibold px-4 py-2 shadow-sm d-inline-flex align-items-center" style="border-radius:2rem;font-weight:600;font-size:1.08rem;letter-spacing:1px;box-shadow:0 2px 8px 0 rgba(13,202,240,0.08);background:rgba(255,255,255,0.07);border-width:2px;transition:background 0.2s,color 0.2s,border-color 0.2s,transform 0.15s;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="me-2" viewBox="0 0 16 16">
+                <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 2 7.5V14a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V11h2v3a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V7.5a.5.5 0 0 0-.146-.354l-6-6z"/>
+              </svg>
+              Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Welcome to Gen_Tech</h1>
+        <p class="hero-subtitle">Innovative Technology Solutions for the Future</p>
+        <div class="hero-buttons">
+          <a href="#portfolio" class="btn btn-primary btn-lg hero-btn">View Our Work</a>
+          <a href="#" class="btn btn-outline-light btn-lg hero-btn" data-bs-toggle="modal" data-bs-target="#contactModal">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Grid Section -->
+  <div id="portfolio" class="portfolio-grid max-width py-5" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+    <!-- Portfolio Item 1 -->
+    <div class="portfolio-card shadow-lg bg-white rounded-4 overflow-hidden" style="width: 320px; transition: transform 0.2s, box-shadow 0.2s;">
+      <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80" alt="Project 1" class="portfolio-img" style="width:100%;height:180px;object-fit:cover;">
+      <div class="portfolio-card-body p-4">
+        <h3 class="portfolio-card-title mb-2" style="font-family:'Orbitron','Montserrat',sans-serif;font-size:1.2rem;">Personal Website</h3>
+        <p class="portfolio-card-desc mb-3 text-secondary">A modern responsive website to showcase my skills, resume, and contact information.</p>
+        <a href="#" class="portfolio-link btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold" target="_blank">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View Project
+        </a>
+      </div>
+    </div>
+    <!-- Portfolio Item 2 -->
+    <div class="portfolio-card shadow-lg bg-white rounded-4 overflow-hidden" style="width: 320px; transition: transform 0.2s, box-shadow 0.2s;">
+      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80" alt="Project 2" class="portfolio-img" style="width:100%;height:180px;object-fit:cover;">
+      <div class="portfolio-card-body p-4">
+        <h3 class="portfolio-card-title mb-2" style="font-family:'Orbitron','Montserrat',sans-serif;font-size:1.2rem;">E-Commerce App</h3>
+        <p class="portfolio-card-desc mb-3 text-secondary">A full-stack e-commerce application with user authentication, product management, and payment integration.</p>
+        <a href="#" class="portfolio-link btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold" target="_blank">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View Project
+        </a>
+      </div>
+    </div>
+    <!-- Portfolio Item 3 -->
+    <div class="portfolio-card shadow-lg bg-white rounded-4 overflow-hidden" style="width: 320px; transition: transform 0.2s, box-shadow 0.2s;">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Project 3" class="portfolio-img" style="width:100%;height:180px;object-fit:cover;">
+      <div class="portfolio-card-body p-4">
+        <h3 class="portfolio-card-title mb-2" style="font-family:'Orbitron','Montserrat',sans-serif;font-size:1.2rem;">Portfolio Gallery</h3>
+        <p class="portfolio-card-desc mb-3 text-secondary">A gallery web app to display and filter creative works, built with modern JavaScript frameworks.</p>
+        <a href="#" class="portfolio-link btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold" target="_blank">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View Project
+        </a>
+      </div>
+    </div>
+    <!-- Portfolio Item 4 -->
+    <div class="portfolio-card shadow-lg bg-white rounded-4 overflow-hidden" style="width: 320px; transition: transform 0.2s, box-shadow 0.2s;">
+      <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Project 4" class="portfolio-img" style="width:100%;height:180px;object-fit:cover;">
+      <div class="portfolio-card-body p-4">
+        <h3 class="portfolio-card-title mb-2" style="font-family:'Orbitron','Montserrat',sans-serif;font-size:1.2rem;">Task Manager</h3>
+        <p class="portfolio-card-desc mb-3 text-secondary">A productivity tool for managing daily tasks, deadlines, and priorities with a clean UI.</p>
+        <a href="#" class="portfolio-link btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold" target="_blank">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View Project
+        </a>
+      </div>
+    </div>
+    <!-- Portfolio Item 5 -->
+    <div class="portfolio-card shadow-lg bg-white rounded-4 overflow-hidden" style="width: 320px; transition: transform 0.2s, box-shadow 0.2s;">
+      <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Project 5" class="portfolio-img" style="width:100%;height:180px;object-fit:cover;">
+      <div class="portfolio-card-body p-4">
+        <h3 class="portfolio-card-title mb-2" style="font-family:'Orbitron','Montserrat',sans-serif;font-size:1.2rem;">Blog Platform</h3>
+        <p class="portfolio-card-desc mb-3 text-secondary">A feature-rich blogging platform with markdown support, comments, and user profiles.</p>
+        <a href="#" class="portfolio-link btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold" target="_blank">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View Project
+        </a>
+      </div>
+    </div>
+    <!-- Portfolio Item 6 -->
+    <div class="portfolio-card shadow-lg bg-white rounded-4 overflow-hidden" style="width: 320px; transition: transform 0.2s, box-shadow 0.2s;">
+      <img src="https://images.unsplash.com/photo-1467987506553-8f3916508521?auto=format&fit=crop&w=400&q=80" alt="Project 6" class="portfolio-img" style="width:100%;height:180px;object-fit:cover;">
+      <div class="portfolio-card-body p-4">
+        <h3 class="portfolio-card-title mb-2" style="font-family:'Orbitron','Montserrat',sans-serif;font-size:1.2rem;">Weather Dashboard</h3>
+        <p class="portfolio-card-desc mb-3 text-secondary">A real-time weather dashboard using public APIs, with location search and forecast charts.</p>
+        <a href="#" class="portfolio-link btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold" target="_blank">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View Project
+        </a>
+      </div>
+    </div>
+  </div>
+  <style>
+    .portfolio-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 8px 32px 0 rgba(13,202,240,0.18);
+      z-index: 2;
+    }
+    .portfolio-link:hover, .portfolio-link:focus {
+      background: linear-gradient(90deg,#0a58ca 0%,#0dcaf0 100%);
+      color: #fff !important;
+      border-color: #0dcaf0;
+      transform: scale(1.04);
+    }
+    /* Dark mode styles */
+    body.dark-mode {
+      background: #18122B !important;
+      color: #e0e0e0 !important;
+    }
+    body.dark-mode .bg-white,
+    body.dark-mode .portfolio-card {
+      background: #232136 !important;
+      color: #e0e0e0 !important;
+      border-color: #232136 !important;
+    }
+    body.dark-mode .portfolio-card-body,
+    body.dark-mode .portfolio-card-title,
+    body.dark-mode .portfolio-card-desc {
+      color: #e0e0e0 !important;
+    }
+    body.dark-mode .portfolio-link {
+      border-color: #0dcaf0 !important;
+      color: #0dcaf0 !important;
+      background: transparent !important;
+    }
+    body.dark-mode .portfolio-link:hover,
+    body.dark-mode .portfolio-link:focus {
+      background: linear-gradient(90deg,#0a58ca 0%,#0dcaf0 100%) !important;
+      color: #fff !important;
+      border-color: #0dcaf0 !important;
+    }
+    body.dark-mode .zone,
+    body.dark-mode .footer,
+    body.dark-mode footer.zone {
+      background: #232136 !important;
+      color: #b6eaff !important;
+      border-top: 2px solid #0dcaf0 !important;
+    }
+    body.dark-mode .modal-content {
+      background: rgba(30,34,43,0.95) !important;
+      color: #e0e0e0 !important;
+    }
+    body.dark-mode .main-nav a,
+    body.dark-mode .main-nav a:visited {
+      color: #b6eaff !important;
+    }
+    body.dark-mode .main-nav a:hover {
+      color: #fff !important;
+    }
+    body.dark-mode #darkModeToggle {
+      border-color: #0dcaf0 !important;
+      color: #0dcaf0 !important;
+      background: #232136 !important;
+    }
+    body.dark-mode #darkModeToggle:hover {
+      background: #0dcaf0 !important;
+      color: #232136 !important;
+    }
+  </style>
+  <script>
+    // Dark mode toggle logic with emoji icon
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) document.body.classList.add('dark-mode');
+    function updateDarkIcon() {
+      darkModeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    }
+    darkModeToggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      updateDarkIcon();
+    });
+    window.addEventListener('DOMContentLoaded', updateDarkIcon);
+  </script>
+
+  <!-- Footer -->
+  <footer class="zone">
+    <p>2019 Assaf Elovic All right reserved. For more articles visit www.assafelovic.com</p>
+  </footer>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
